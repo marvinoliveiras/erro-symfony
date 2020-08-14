@@ -1,0 +1,60 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+medicos:
+    path: '/medicos'
+    contoller: 'App\Controller\MedicosController::buscarTodos'
+    method:
+       'GET'
+medico:
+    path: /medicos/{id}
+    contoller: App\Controller\MedicosController::buscarUm
+    method:
+       GET
+
+remove_medico:
+    path: /medicos/{id}
+    contoller: App\Controller\MedicosController::remove
+    method:
+       DELETE
+atualiza_medico:
+    path: /medicos/{id}
+    contoller: App\Controller\MedicosController::atualiza
+    method:
+       PUT
+criar_medico:
+    path: /medicos
+    contoller: App\Controller\MedicosController::novo
+    method:
+       POST
+
+especialidades:
+    path: /especialidades
+    contoller: App\Controller\EspecialidadesController::buscarTodos
+    method:
+       GET
+
+especialidade:
+    path: /especialidades/{id}
+    contoller: App\Controller\EspecialidadesController::buscarUm
+    method:
+       GET
+
+remove_especialidade:
+    path: /especialidades/{id}
+    contoller: App\Controller\EspecialidadesController::remove
+    method:
+       DELETE
+
+criar_especialidade:
+    path: /especialidades
+    contoller: App\Controller\EspecialidadesController::novo
+    method:
+       POST
+
+atualiza_especialidade:
+    path: /especialidades/{id}
+    contoller: App\Controller\EspecialidadesController::atualiza
+    method:
+       PUT
