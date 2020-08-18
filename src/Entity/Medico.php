@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MedicoRepository)
+ * @ORM\Entity(repositoryClass="App\Repository\EspecialidadeRepository")
  */
 class Medico implements \JsonSerializable
 {
@@ -75,7 +75,14 @@ class Medico implements \JsonSerializable
             'id' => $this->getId(),
             'crm' => $this->getCrm(),
             'nome' => $this->getNome(),
-            'especialidadeId' => $this->getEspecialidade()->getId()
+            'especialidadeId' => $this->getEspecialidade()->getId(),
+            '_links' => [
+                ['rel' => 'self',
+                'path' => '/medicos/'. $this->getId()
+            ],
+                ['rel' => 'especialidade',
+                'path' => '/especialidades/'.$this->getEspecialidade()->getId()]
+            ]
         ];
     }
 }

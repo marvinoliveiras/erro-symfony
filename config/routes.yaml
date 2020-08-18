@@ -1,60 +1,54 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
-
-medicos:
-    path: '/medicos'
-    contoller: 'App\Controller\MedicosController::buscarTodos'
-    method:
-       'GET'
-medico:
-    path: /medicos/{id}
-    contoller: App\Controller\MedicosController::buscarUm
-    method:
-       GET
-
-remove_medico:
-    path: /medicos/{id}
-    contoller: App\Controller\MedicosController::remove
-    method:
-       DELETE
-atualiza_medico:
-    path: /medicos/{id}
-    contoller: App\Controller\MedicosController::atualiza
-    method:
-       PUT
-criar_medico:
-    path: /medicos
-    contoller: App\Controller\MedicosController::novo
-    method:
-       POST
-
 especialidades:
     path: /especialidades
-    contoller: App\Controller\EspecialidadesController::buscarTodos
-    method:
-       GET
-
+    controller: App\Controller\EspecialidadesController::buscarTodos
+    methods:
+        - GET
 especialidade:
     path: /especialidades/{id}
-    contoller: App\Controller\EspecialidadesController::buscarUm
-    method:
-       GET
-
+    controller: App\Controller\EspecialidadesController::buscarUm
+    methods:
+        - GET
+nova_especialidade:
+    path: /especialidades
+    controller: App\Controller\EspecialidadesController::novo
+    methods:
+        - POST
 remove_especialidade:
     path: /especialidades/{id}
-    contoller: App\Controller\EspecialidadesController::remove
-    method:
-       DELETE
-
-criar_especialidade:
-    path: /especialidades
-    contoller: App\Controller\EspecialidadesController::novo
-    method:
-       POST
-
+    controller: App\Controller\EspecialidadesController::remove
+    methods:
+        - DELETE
 atualiza_especialidade:
     path: /especialidades/{id}
-    contoller: App\Controller\EspecialidadesController::atualiza
-    method:
-       PUT
+    controller: App\Controller\EspecialidadesController::atualiza
+    methods:
+        - PUT
+
+medicos:
+    path: /medicos
+    controller: App\Controller\MedicosController::buscarTodos
+    methods:
+        - GET
+medico:
+    path: /medicos/{id}
+    controller: App\Controller\MedicosController::buscarUm
+    methods:
+        - GET
+novo_medico:
+    path: /medicos
+    controller: App\Controller\MedicosController::novo
+    methods:
+        - POST
+remove_medico:
+    path: /medicos/{id}
+    controller: App\Controller\MedicosController::remove
+    methods:
+        - DELETE
+atualiza_medico:
+    path: /medicos/{id}
+    controller: App\Controller\MedicosController::atualiza
+    methods:
+        - PUT

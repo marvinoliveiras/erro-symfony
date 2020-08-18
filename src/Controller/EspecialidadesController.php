@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Especialidade;
 use App\Helper\EspecialidadeFactory;
+use App\Helper\ExtratorDadosRequest;
 use App\Repository\EspecialidadeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,46 +12,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class EspecialidadesController extends BaseControlller
+class EspecialidadesController extends BaseController
 {
-
     public function __construct(
         EntityManagerInterface $entityManager,
         EspecialidadeRepository $repository,
-        EspecialidadeFactory $factory
+        EspecialidadeFactory $factory,
+        ExtratorDadosRequest $extratorDadosRequest
     ) {
-
-        parent::__construct($repository, $entityManager, $factory);
-
+        parent::__construct($entityManager, $repository, $factory, $extratorDadosRequest);
     }
 
-    /**
-     * @Route("/especialidades/{id}", methods={"PUT"})
-     */
-    public function atualiza(int $id, Request $request): Response
+    public function atualizaEntidadeExistente(int $id, $entidade)
     {
-        $dadosRequest = $request->getContent();
-        $dadosEmJson = json_decode($dadosRequest);
+        /** @var Especialidade $entidadeExistente */
+        $entidadeExistente = $this->repository->find($id);
+        if (is_null($entidadeExistente)) {
+            throw new \InvalidArgumentException();
+        }
+        $entidadeExistente->setDescricao($entidade->getDescricao());
 
-        $especialidade = $this->repository->find($id);
-        $especialidade
-            ->setDescricao($dadosEmJson->descricao);
-
-        $this->entityManager->flush();
-
-        return new JsonResponse($especialidade);
+        return $entidadeExistente;
     }
-
-    /**
-     * @param Especialidade $entidadeExistente
-     * @param Especialidade $entidadeEnviada
-     */
-
-    public function atualizaEntidadeExistente($entidadeExistente, $entidadeEnviada)
-    {
-        $entidadeExistente
-            ->setDescricao($entidadeEnviada->getDescricao());
-            
-    }
-
 }

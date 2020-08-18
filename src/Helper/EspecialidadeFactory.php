@@ -1,13 +1,12 @@
 <?php
+
 namespace App\Helper;
 
 use App\Entity\Especialidade;
-use App\Helper\EntidadeFactory;
 
-class EspecialidadeFactory implements EntidadeFactory{
-
-
-    public function criarEntidade(string $json): Especialidade
+class EspecialidadeFactory implements EntidadeFactoryInterface
+{
+    public function criarEntidade(string $json)
     {
         $dadosEmJson = json_decode($json);
         $especialidade = new Especialidade();
