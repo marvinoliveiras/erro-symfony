@@ -66,7 +66,6 @@ abstract class BaseController extends AbstractController
             $itensPorPagina,
             ($paginaAtual - 1) * $itensPorPagina
         );
-        var_dump($lista);
         $fabricaResposta = new ResponseFactory(
             true,
             $lista,
@@ -74,7 +73,9 @@ abstract class BaseController extends AbstractController
             $paginaAtual,
             $itensPorPagina
         );
-        return $fabricaResposta->getResponse();
+        echo "<pre>";
+        var_dump($fabricaResposta, $lista);
+        //return $fabricaResposta->getResponse();
     }
 
     public function buscarUm(int $id): Response

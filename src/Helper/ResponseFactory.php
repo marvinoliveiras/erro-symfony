@@ -22,7 +22,7 @@ class ResponseFactory{
     )
     {
      $this->sucesso = $sucesso;
-     $this->ConteudoResposta = $conteudoResposta;
+     $this->conteudoResposta = $conteudoResposta;
      $this->statusDaResposta = $statusDaResposta;
      $this->paginaAtual = $paginaAtual;
      $this->itensPorPagina = $itensPorPagina;
@@ -41,7 +41,6 @@ class ResponseFactory{
             unset($conteudoResposta['paginaAtual']);
             unset($conteudoResposta['itensPorPagina']);
         }
-
         return new JsonResponse($conteudoResposta, $this->statusDaResposta);
     }
 }
