@@ -73,9 +73,7 @@ abstract class BaseController extends AbstractController
             $paginaAtual,
             $itensPorPagina
         );
-        echo "<pre>";
-        var_dump($fabricaResposta, $lista);
-        //return $fabricaResposta->getResponse();
+        return $fabricaResposta->getResponse();
     }
 
     public function buscarUm(int $id): Response
