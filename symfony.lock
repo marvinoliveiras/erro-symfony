@@ -20,6 +20,9 @@
     "doctrine/common": {
         "version": "2.13.3"
     },
+    "doctrine/data-fixtures": {
+        "version": "1.4.3"
+    },
     "doctrine/dbal": {
         "version": "2.10.2"
     },
@@ -40,6 +43,18 @@
     },
     "doctrine/doctrine-cache-bundle": {
         "version": "1.4.0"
+    },
+    "doctrine/doctrine-fixtures-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "fc52d86631a6dfd9fdf3381d0b7e3df2069e51b3"
+        },
+        "files": [
+            "./src/DataFixtures/AppFixtures.php"
+        ]
     },
     "doctrine/doctrine-migrations-bundle": {
         "version": "2.2",
@@ -91,13 +106,10 @@
         "version": "3.2.1"
     },
     "laminas/laminas-zendframework-bridge": {
-        "version": "1.0.4"
+        "version": "1.1.0"
     },
     "nikic/php-parser": {
-        "version": "v4.8.0"
-    },
-    "ocramius/package-versions": {
-        "version": "1.9.0"
+        "version": "v4.9.0"
     },
     "ocramius/proxy-manager": {
         "version": "2.8.1"
@@ -124,7 +136,10 @@
             "branch": "master",
             "version": "5.2",
             "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
-        }
+        },
+        "files": [
+            "./config/packages/sensio_framework_extra.yaml"
+        ]
     },
     "symfony/cache": {
         "version": "v4.2.12"
@@ -149,7 +164,7 @@
         "version": "v1.1.9"
     },
     "symfony/debug": {
-        "version": "v4.4.11"
+        "version": "v4.2.12"
     },
     "symfony/dependency-injection": {
         "version": "v4.2.12"
@@ -224,9 +239,6 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.18.1"
     },
-    "symfony/polyfill-php80": {
-        "version": "v1.18.1"
-    },
     "symfony/property-access": {
         "version": "v4.2.12"
     },
@@ -279,11 +291,5 @@
     },
     "webimpress/safe-writer": {
         "version": "2.0.1"
-    },
-    "zendframework/zend-code": {
-        "version": "3.3.1"
-    },
-    "zendframework/zend-eventmanager": {
-        "version": "3.2.1"
     }
 }
