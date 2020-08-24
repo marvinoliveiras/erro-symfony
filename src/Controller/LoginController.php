@@ -46,7 +46,6 @@ class LoginController extends AbstractController
             'username' => $dadosEmJson->usuario
             ]);
 
-            var_dump($dadosEmJson->senha,$user, $this->encoder);
             if(!$this->encoder->isPasswordValid($user, $dadosEmJson->senha)){
                 return new JsonResponse([
                     'erro' => 'Usuário e/ou senha inválido(s)'

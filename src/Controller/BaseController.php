@@ -7,7 +7,10 @@ use App\Helper\ExtratorDadosRequest;
 use App\Helper\ResponseFactory;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\CacheItem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,16 +34,30 @@ abstract class BaseController extends AbstractController
      */
     private $extratorDadosRequest;
 
+    /**
+     * @var CacheItemPoolInterface
+     */
+    private $cache;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         ObjectRepository $repository,
         EntidadeFactoryInterface $factory,
-        ExtratorDadosRequest $extratorDadosRequest
+        ExtratorDadosRequest $extratorDadosRequest,
+        CacheItemPoolInterface $cache,
+        LoggerInterface $logger
     ) {
         $this->entityManager = $entityManager;
         $this->repository = $repository;
         $this->factory = $factory;
         $this->extratorDadosRequest = $extratorDadosRequest;
+        $this->cache = $cache;
+        $this->logger = $logger;
     }
 
     public function novo(Request $request): Response
@@ -51,6 +68,19 @@ abstract class BaseController extends AbstractController
         $this->entityManager->persist($entidade);
         $this->entityManager->flush();
 
+        $cacheItem = $this->cache->getItem(
+            $this->cachePrefix()
+            .$entidade->getId());
+
+            $cacheItem->set($entidade);
+            $this->cache->save($cacheItem);
+
+            $this->logger->notice("novo registro de {entidade} adicionado com id: {id}!",
+                [
+                    'entidade' => get_class($entidade),
+                    'id' => $entidade->getId()
+                ]
+            );
         return new JsonResponse($entidade);
     }
 
@@ -78,7 +108,9 @@ abstract class BaseController extends AbstractController
 
     public function buscarUm(int $id): Response
     {
-        $entidade = $this->repository->find($id);
+        $entidade = $this->cache->hasItem($this->cachePrefix().$id)
+            ? $this->cache->getItem($this->cachePrefix().$id)->get()
+            : $this->repository->find($id);
         $statusResposta = is_null($entidade)
             ? Response::HTTP_NO_CONTENT
             : Response::HTTP_OK;
@@ -97,6 +129,9 @@ abstract class BaseController extends AbstractController
         $this->entityManager->remove($entidade);
         $this->entityManager->flush();
 
+        $this->cache->deleteItem(
+            $this->cachePrefix()
+            .$id);
         return new Response('', Response::HTTP_NO_CONTENT);
     }
 
@@ -108,6 +143,11 @@ abstract class BaseController extends AbstractController
         try {
             $entidadeExistente = $this->atualizaEntidadeExistente($id, $entidade);
             $this->entityManager->flush();
+
+            $cacheItem = $this->cache->getItem($this->cachePrefix() . $id);
+            $cacheItem->set($entidadeExistente);
+            $this->cache->save($cacheItem);
+
 
             $fabrica = new ResponseFactory(
                 true,
@@ -126,4 +166,6 @@ abstract class BaseController extends AbstractController
     }
 
     abstract function atualizaEntidadeExistente(int $id, $entidade);
+    
+    abstract public function cachePrefix(): string;
 }

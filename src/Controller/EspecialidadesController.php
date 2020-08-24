@@ -7,10 +7,8 @@ use App\Helper\EspecialidadeFactory;
 use App\Helper\ExtratorDadosRequest;
 use App\Repository\EspecialidadeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Log\LoggerInterface;
 
 class EspecialidadesController extends BaseController
 {
@@ -18,9 +16,14 @@ class EspecialidadesController extends BaseController
         EntityManagerInterface $entityManager,
         EspecialidadeRepository $repository,
         EspecialidadeFactory $factory,
-        ExtratorDadosRequest $extratorDadosRequest
+        ExtratorDadosRequest $extratorDadosRequest,
+        CacheItemPoolInterface $cache,
+        LoggerInterface $logger
     ) {
-        parent::__construct($entityManager, $repository, $factory, $extratorDadosRequest);
+        parent::__construct(
+            $entityManager, $repository,
+            $factory, $extratorDadosRequest,
+            $cache, $logger);
     }
 
     public function atualizaEntidadeExistente(int $id, $entidade)
@@ -34,4 +37,10 @@ class EspecialidadesController extends BaseController
 
         return $entidadeExistente;
     }
+
+    
+public function cachePrefix():string{
+
+    return 'especialidade_';
+}
 }

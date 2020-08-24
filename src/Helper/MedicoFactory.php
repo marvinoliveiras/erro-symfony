@@ -19,16 +19,27 @@ class MedicoFactory implements EntidadeFactoryInterface
 
     public function criarEntidade(string $json): Medico
     {
-        $dadoEmJson = json_decode($json);
-        $especialidadeId = $dadoEmJson->especialidadeId;
-        $especialidade = $this->especialidadeRepository->find($especialidadeId);
+        $objetoJson = json_decode($json);
 
+        $this->checkAllProperties($objetoJson);
+        
         $medico = new Medico();
         $medico
-            ->setCrm($dadoEmJson->crm)
-            ->setNome($dadoEmJson->nome)
-            ->setEspecialidade($especialidade);
+            ->setCrm($objetoJson->crm)
+            ->setNome($objetoJson->nome)
+            ->setEspecialidade(
+                $this->especialidadeRepository
+                ->find($objetoJson->especialidadeId));
 
         return $medico;
+    }
+
+    public function checkAllProperties(Object $objetoJson){
+        if (!property_exists($objetoJson, 'nome')||
+        !property_exists($objetoJson, 'crm')||
+        !property_exists($objetoJson, 'especialidadeId')
+        ){
+            throw new EntityFactoryException('Médico necessita de Nome, CRM e Especialidade');
+        }
     }
 }
